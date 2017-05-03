@@ -16,7 +16,7 @@ plt = utils.rand_visual([samples, images], rows=2, columns=5, indices=[[0, 1, 2,
 plt.ion()
 plt.show()
 images = images.reshape((images.shape[0], 1, images.shape[1], images.shape[2]))
-n_classes = 42
+n_classes = 43
 
 print("Samples: ", images.shape[0])
 print("Labels: ", labels)

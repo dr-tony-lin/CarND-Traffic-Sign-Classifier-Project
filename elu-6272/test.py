@@ -12,7 +12,7 @@ with open(config.TESTING_FILE, mode='rb') as f:
 X_test, y_test = test_data['features'], test_data['labels']
 
 # How many unique classes/labels there are in the dataset.
-CLASSES = 42
+CLASSES = 43
 
 print("Number of testing examples =", len(X_test))
 print("Image data shape =", X_test.shape[1:])
@@ -41,7 +41,7 @@ def test(features, labels, checkpoint_folder='.', checkpoint_name='trained'):
             accuracy_operation = model.create_evaluation(cnn)
 			# Evaluate the test data against the pre-trained data
             test_accuracy = model.evaluate(session, features, labels, accuracy_operation, cnn)
-            print("\tTest accuracy for {0} samples = {1:.3f}".format(len(features), test_accuracy))
+            print("\tTest accuracy for {0} samples = {1:.4f}".format(len(features), test_accuracy))
     print("\tTest time {:.3} seconds".format((time.time() - start_time)))
 
 test(utils.normal_gray(X_test), y_test, config.CHECKPOINT_FOLDER, config.CHECKPOINT_NAME)

@@ -4,13 +4,13 @@ import utils
 import model
 import config
 
-EPOCHS = 200
+EPOCHS = 250
 BATCH_SIZE = 256
 LEARNING_RATE = 0.001
 DROPOUT_KEEP = 0.5
 TRAINING_GOAL = 0.999
 ACCEPT = 0.993
-TRAINS = 3
+TRAINS = 4
 
 with open(config.TRAINING_FILE, mode='rb') as f:
     train_data = pickle.load(f)
@@ -21,7 +21,7 @@ X_train, y_train = train_data['features'], train_data['labels']
 X_valid, y_valid = validation_data['features'], validation_data['labels']
 
 # How many unique classes/labels there are in the dataset.
-classes = max(y_train) - min(y_train)
+classes = max(y_train) - min(y_train) + 1
 
 print("Number of training examples =", len(X_train))
 print("Number of validation examples =", len(X_valid))

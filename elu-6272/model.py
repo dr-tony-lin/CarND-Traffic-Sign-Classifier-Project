@@ -127,7 +127,7 @@ def cnn(features, classes, keep_prob=None, data_format='NCHW'):
     logits = tf.nn.dropout(logits, keep_prob)
 
     # Layer 5: Fully Connected. Input = 6272. Output = 1600.
-    logits = fcnn(logits, shape=(6272, 1600), keep_prob=keep_prob)
+    logits = fcnn(logits, shape=(logits.get_shape()[-1], 1600), keep_prob=keep_prob)
 
     # Layer 6: Fully Connected. Input = 1600. Output = 400.
     logits = fcnn(logits, shape=(1600, 400), keep_prob=keep_prob)
@@ -170,7 +170,7 @@ def create_model(feature_shape, classes, feature_dtype=tf.float32, label_dtype=t
     else:
         data_format = 'NHWC'
     features = tf.placeholder(feature_dtype, (None,) + feature_shape)
-    labels = tf.placeholder(label_dtype, (None))
+    labels = tf.placeholder(label_dtype, None)
     keep_prob = tf.placeholder(tf.float32)
     logits = cnn(features, classes=classes, keep_prob=keep_prob, data_format=data_format)
     tf.add_to_collection("features", features)
@@ -289,8 +289,8 @@ def create_training(model, learning_rate, global_step=None):
     learning_rate: the learning rate
     global_step: the global step, default is None
     '''
-    one_hot_y = tf.one_hot(model.labels, model.classes)
-    cross_entropy = tf.nn.softmax_cross_entropy_with_logits(labels=one_hot_y, logits=model.logits)
+
+    cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels=model.labels, logits=model.logits)
     loss_operation = tf.reduce_mean(cross_entropy)
     optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate, epsilon=1e-7)
     return optimizer.minimize(loss_operation, global_step=global_step)
@@ -301,8 +301,7 @@ def create_evaluation(model):
     Parameters:
     model: the CNN model
     '''
-    one_hot_y = tf.one_hot(model.labels, model.classes)
-    correct_prediction = tf.equal(tf.argmax(model.logits, 1), tf.argmax(one_hot_y, 1))
+    correct_prediction = tf.equal(tf.arg_max(model.logits, 1), model.labels)
     return tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 
 def create_prediction(model):
@@ -367,10 +366,10 @@ def train_model(features, labels, valid, y_valid, checkpoint, dropout_keep_prob=
     '''
     save_id = 0
     count = 0
-    classes = int(max(labels) - min(labels))
+    classes = int(max(labels) - min(labels)) + 1
     n_samples = len(features)
 
-    model = create_model(features.shape[1:], classes)
+    model = create_model(features.shape[1:], classes, label_dtype=tf.int64)
 
     training_operation = create_training(model, learning_rate)
     accuracy_operation = create_evaluation(model)
