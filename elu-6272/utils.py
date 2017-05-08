@@ -1,4 +1,3 @@
-import random as rand
 import cv2
 import numpy as np
 import matplotlib.pyplot as plt
@@ -6,56 +5,59 @@ import matplotlib.pyplot as plt
 def randomize(image, scale):
     '''
     Randomize the image
-    Parameters:
+
+    Arguments:
     image: the image
     scale: the scale of randomization
     '''
     noise = cv2.randu(np.empty(image.shape, dtype=np.float32), 0, scale)
     return noise + image
 
-def normalize_grayscale(img):
+def normalize(img):
     '''
     Normalize the grayscale image
-    Parameter:
+
+    Arguments:
     a: the grayscale image to normalize
     Return: the normalized grayscale image
     '''
     if img.dtype != np.float32:
         img = np.array(img, dtype=np.float32)
-    #return (img - np.mean(img)) / (np.std(img) + 1e-2)
-    min = np.amin(img)
-    max = np.amax(img)
-    mid = (max + min) / 2
-    dis = (max - min + 1) / 2 # +1 in case min = max
+    low = np.amin(img, axis=(0,1))
+    high = np.amax(img, axis=(0,1))
+    mid = (high + low) * 0.5
+    dis = (high - low + 0.1) * 0.5  # +0.1 in case min = max
     return (img - mid) / dis
 
 def grayscale(img):
     '''
     Convert the image to grayscale
-    Parameter:
+
+    Arguments:
     img: the image to convert to grayscale
     Return: the converted grayscale image
-    
+
     '''
     return cv2.equalizeHist(cv2.cvtColor(img, cv2.COLOR_RGB2GRAY))
 
 def normal_gray(images, randomize_scale=None):
     '''
     Convert the images into normalized grayscale images for processing
-    Parameters:
+
+    Arguments:
     images: an array of RGB images
     Returns: an array of normalized grayscale images
     '''
     if randomize_scale is not None:
-        return np.array([normalize_grayscale(randomize(grayscale(img), randomize_scale)) for img in images], dtype=np.float32)
+        return np.array([normalize(randomize(grayscale(img), randomize_scale)) for img in images], dtype=np.float32)
     else:
-        return np.array([normalize_grayscale(grayscale(img)) for img in images], dtype=np.float32)
+        return np.array([normalize(grayscale(img)) for img in images], dtype=np.float32)
 
-def rand_visual(images, rows = 4, columns=16, fig = None, indices=None):
+def rand_visual(images, rows=4, columns=16, fig=None, indices=None):
     '''
     Randomly show images from images
-    
-    Parameters:
+
+    Arguments:
         images: the image array
         rows: number of rows to show
         columns: number of columns to show
@@ -81,4 +83,4 @@ def rand_visual(images, rows = 4, columns=16, fig = None, indices=None):
                     plt.imshow(images[j][rands[k]], cmap='gray')
                 else:
                     plt.imshow(images[j][rands[k]])
-    return plt          
+    return plt
