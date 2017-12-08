@@ -15,8 +15,30 @@ The goals / steps of this project are the following:
 [image1]: ./sample-training-images.png "Sample training images"
 [image2]: ./extra-traffic-images.png "Extra raffic Sign Images"
 
-## Project Home
-Here is my [project home at Github](https://github.com/dr-tony-lin/CarND-Traffic-Sign-Classifier-Project.git)
+## Usage
+To train the model, run:
+```
+python train.py --data sample_folder --epochs epochs --batch batch_size --lr learning_rate --drr dropout_rate --accept acceptance_accuracy_threshold
+```
+
+Where:
+
+* --data: folder containing the training samples
+* --epochs: number of epochs to train
+* --batch: the batch size
+* --lr: the learning rate
+* --drr: the drop out ration
+* --accept: the accepted test accuracy threshold, a checkpoint will be saved for an epoch that has reached this accuracy.
+
+To predict, tun:
+```
+python predict.py --data images_folder --checkpoint checkpoint_prefix
+```
+
+Where:
+
+* --data: folder containing the images to predict, all images in the folder will be processed
+* --checkpoint: prefix of the trained model, all trained model matching the prefix will be used for prediction. 
 
 ## Data Set Summary & Exploration
 The project's data set is summarized as follows:
@@ -97,6 +119,7 @@ I have tried models with one extra fully connected layer, the repository contain
 | CNN-3-4           	| 3 convolution layers, and 4 network layers, gassian weight initialization                              |
 | CNN-4-3           	| 4 convolution layers, and 3 network layers, gassian weight initialization                              |
 | CNN-4-4            	| 4 convolution layers, and 4 network layers, gassian weight initialization                              |
+| VGG16               | VGG16 can only be run if the GPU's memory is large enough                                        | 
 | Gaussian            	| 4 convolution layers, and 3 network layers, gassian weight initialization                              | 
 | randomize_image       | 4 convolution layers, and 3 network layers, xavier weight initialization                               | 
 | xavier            	| 4 convolution layers, and 3 network layers, xavier weight initialization                               | 

@@ -7,7 +7,7 @@ import model
 
 from config import config
 
-files = glob.glob('../examples/traff-*.jpg')
+files = glob.glob(config.data + '/traff-*.jpg')
 images = np.array([cv2.cvtColor(cv2.imread(file, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB) for file in files])
 labels = [int(re.findall(r'\d+', file)[0]) for file in files]
 

@@ -602,6 +602,7 @@ def predict_images(images, labels, checkpoint, preprocessor=None):
         tf.reset_default_graph()
         with tf.Session() as session:
             # Load the pre-trained model
+            print("Loading trained model: {}".format(trained))
             model = load_trained_model(session, trained)
 
             print("Classes: ", model.classes)
