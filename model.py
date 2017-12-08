@@ -341,7 +341,7 @@ def find_trained_model(checkpoint):
     Arguments:
     checkpoint: checkpoint's path and base name
     '''
-    files = glob.glob('{0}-*.meta'.format(checkpoint))
+    files = glob.glob('{0}*.meta'.format(checkpoint))
     if files is None or len(files) == 0:
         print("No trained model found with {0}!".format(checkpoint))
         return None

@@ -30,6 +30,11 @@ Where:
 * --drr: the drop out ration
 * --accept: the accepted test accuracy threshold, a checkpoint will be saved for an epoch that has reached this accuracy.
 
+For example:
+```
+python train.py --epochs 60 --batch 256 --lr 0.0006 --drr 0.5 --accept 0.99
+```
+
 To predict, tun:
 ```
 python predict.py --data images_folder --checkpoint checkpoint_prefix
@@ -39,6 +44,11 @@ Where:
 
 * --data: folder containing the images to predict, all images in the folder will be processed
 * --checkpoint: prefix of the trained model, all trained model matching the prefix will be used for prediction. 
+
+For example:
+```
+python predict.py --data examples --checkpoint elu-6272\traffic_signs
+```
 
 ## Data Set Summary & Exploration
 The project's data set is summarized as follows:
