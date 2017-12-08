@@ -47,7 +47,7 @@ Where:
 
 For example:
 ```
-python predict.py --data examples --checkpoint elu-6272\traffic_signs
+python predict.py --data examples --checkpoint trained\traffic_signs
 ```
 
 ## Data Set Summary & Exploration
